@@ -1,0 +1,359 @@
+{
+	"info": {
+		"_postman_id": "afac59dd-c645-4b00-8c11-3cdda943186d",
+		"name": "Strava Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33897532"
+	},
+	"item": [
+		{
+			"name": "Athlets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Check that status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Elena\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(490);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check that username in response\", function() {\r",
+							"    pm.expect(pm.response.text()).to.include(\"username\");\r",
+							"})\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.strava.com/api/v3/athlete",
+					"protocol": "https",
+					"host": [
+						"www",
+						"strava",
+						"com"
+					],
+					"path": [
+						"api",
+						"v3",
+						"athlete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Athlete Stats",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(470);\r",
+							"});\r",
+							"var response = pm.response.json();\r",
+							"\r",
+							"pm.globals.set(\"id\", \"response[0].id\");\r",
+							"\r",
+							"pm.test(\"Check that distance in response\", function() {\r",
+							"    pm.expect(pm.response.text()).to.include(\"distance\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "7dbe5fc196288c724ec2becfd1ebe654f0180579",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.strava.com/api/v3/athletes/135944938/stats",
+					"protocol": "https",
+					"host": [
+						"www",
+						"strava",
+						"com"
+					],
+					"path": [
+						"api",
+						"v3",
+						"athletes",
+						"135944938",
+						"stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Athlete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Elena\");\r",
+							"});\r",
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(513);\r",
+							"});\r",
+							"\r",
+							"var response = pm.response.json();\r",
+							"\r",
+							"pm.globals.set(\"id\", \"response[0].id\");\r",
+							"\r",
+							"pm.test(\"Check that username in response\", function() {\r",
+							"    pm.expect(pm.response.text()).to.include(\"username\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "7dbe5fc196288c724ec2becfd1ebe654f0180579",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "var StravaApiV3 = require('strava_api_v3');\r\nvar defaultClient = StravaApiV3.ApiClient.instance;\r\n\r\n// Configure OAuth2 access token for authorization: strava_oauth\r\nvar strava_oauth = defaultClient.authentications['strava_oauth'];\r\nstrava_oauth.accessToken = \"f58806e214fbd588fa61638f84f03796e5a3baf5\"\r\n\r\nvar api = new StravaApiV3.AthletesApi()\r\n\r\nvar weight = 3.4; // {3.4} The weight of the athlete in kilograms.\r\n\r\n\r\nvar callback = function(error, data, response) {\r\n  if (error) {\r\n    console.error(error);\r\n  } else {\r\n    console.log('API called successfully. Returned data: ' + data);\r\n  }\r\n};\r\napi.updateLoggedInAthlete(weight, callback);",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://www.strava.com/api/v3/athlete/",
+					"protocol": "https",
+					"host": [
+						"www",
+						"strava",
+						"com"
+					],
+					"path": [
+						"api",
+						"v3",
+						"athlete",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Token refresh",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"Bearer\");\r",
+							"});\r",
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200]);\r",
+							"});\r",
+							"var response = pm.response.json();\r",
+							"\r",
+							"pm.globals.set(\"id\", \"response[0].id\");\r",
+							"\r",
+							"pm.test(\"Check that token_type in response\", function() {\r",
+							"    pm.expect(pm.response.text()).to.include(\"token_type\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://www.strava.com/oauth/token?grant_type=refresh_token&client_id=125486&client_secret=e532ed2d6623b096ff08a6371fd8d09947378588&grant_type=refresh_token&refresh_token=cfb560ccd10e76d718de3f86cf1a4bfa618aef5b&scope=read_all,profile:read_all,activity:read_all,activity:write",
+					"protocol": "https",
+					"host": [
+						"www",
+						"strava",
+						"com"
+					],
+					"path": [
+						"oauth",
+						"token"
+					],
+					"query": [
+						{
+							"key": "grant_type",
+							"value": "refresh_token"
+						},
+						{
+							"key": "client_id",
+							"value": "125486"
+						},
+						{
+							"key": "client_secret",
+							"value": "e532ed2d6623b096ff08a6371fd8d09947378588"
+						},
+						{
+							"key": "grant_type",
+							"value": "refresh_token"
+						},
+						{
+							"key": "refresh_token",
+							"value": "cfb560ccd10e76d718de3f86cf1a4bfa618aef5b"
+						},
+						{
+							"key": "scope",
+							"value": "read_all,profile:read_all,activity:read_all,activity:write"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "useBrowser",
+				"value": true,
+				"type": "boolean"
+			},
+			{
+				"key": "tokenType",
+				"value": "",
+				"type": "string"
+			},
+			{
+				"key": "accessToken",
+				"value": "",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "125486",
+				"type": "string"
+			},
+			{
+				"key": "clientSecret",
+				"value": "e532ed2d6623b096ff08a6371fd8d09947378588",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
